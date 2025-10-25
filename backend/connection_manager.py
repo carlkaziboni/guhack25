@@ -5,15 +5,16 @@ class ConnectionManager:
     def __init__(self):
         self.active_connections: list[WebSocket] = []
 
-    def connect(self, websocket: WebSocket):
+    async def connect(self, websocket: WebSocket):
+        await websocket.accept()
         self.active_connections.append(websocket)
-        websocket.send_json(
+        await websocket.send_json(
             {
                 "question": "What specific challenge or goal in your career are you trying to solve right now?"
             }
         )
 
-    def disconnect(self, websocket: WebSocket):
+    async def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
 
     async def send_personal_message(self, message: str, websocket: WebSocket):
