@@ -51,7 +51,6 @@ export default function Door({ position, label, isNear }: DoorProps) {
         color={isNear ? "#ffd700" : "#ffffff"}
         anchorX="center"
         anchorY="middle"
-        font="/fonts/inter-bold.woff"
       >
         {label}
       </Text>

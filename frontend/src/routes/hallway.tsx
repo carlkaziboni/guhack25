@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Canvas } from '@react-three/fiber'
 import { PerspectiveCamera, Environment, Stars } from '@react-three/drei'
-import Hallway from '@/components/Hallway.jsx'
-import Avatar from '@/components/Avatar.jsx'
-import Door from '@/components/Door.jsx'
+import Hallway from '@/components/Hallway.tsx'
+import Avatar from '@/components/Avatar.tsx'
+import Door from '@/components/Door.tsx'
 import '@/styles/index.css'
 import { useState } from 'react'
 
