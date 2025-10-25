@@ -7,7 +7,7 @@ import Door from '@/components/Door.jsx'
 import '@/styles/index.css'
 import { useState } from 'react'
 
-const doorPositions = [
+const doorPositions: { position: [number, number, number]; label: string; type: string; }[] = [
   { position: [-4, 0, -2], label: 'Internship', type: 'internship' },
   { position: [0, 0, -2], label: 'Upskill', type: 'upskill' },
   { position: [4, 0, -2], label: 'Graduate Job', type: 'graduate' },
@@ -18,7 +18,7 @@ export const Route = createFileRoute('/hallway')({
 })
 
 function RouteComponent() {
-  const [nearDoor, setNearDoor] = useState(null)
+  const [nearDoor] = useState(null)
 
   const handleDoorInteract = () => {
     if (nearDoor) {

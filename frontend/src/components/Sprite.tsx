@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function Sprite({ x = 100, y = 100, isSprinting = false, direction = "right" }) {
   const frameWidth = 36;

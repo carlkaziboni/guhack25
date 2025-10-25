@@ -11,13 +11,12 @@ function RouteComponent() {
   const [position, setPosition] = useState({ x: 100, y: 100 })
   const [isMoving, setIsMoving] = useState(false)
   const [direction, setDirection] = useState('right') // 🧭 new state
-  const step = 5
   const sprintStep = 12
 
   useEffect(() => {
-    const keys = new Set()
+    const keys = new Set<string>()
 
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase()
       if (
         [
@@ -69,7 +68,7 @@ function RouteComponent() {
       }
     }
 
-    const handleKeyUp = (e) => {
+    const handleKeyUp = (e: KeyboardEvent) => {
       keys.delete(e.key.toLowerCase())
       if (
         ![...keys].some((k) =>

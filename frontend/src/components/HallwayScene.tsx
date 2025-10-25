@@ -17,7 +17,7 @@ const doorPositions = [
 ];
 
 export default function HallwayScene({ onDoorInteract }: HallwaySceneProps) {
-  const [avatarPosition, setAvatarPosition] = useState<THREE.Vector3 | null>(null);
+  const [_, setAvatarPosition] = useState<THREE.Vector3 | null>(null);
   const [nearDoor, setNearDoor] = useState<string | null>(null);
   const avatarRef = useRef<THREE.Mesh>(null);
 
