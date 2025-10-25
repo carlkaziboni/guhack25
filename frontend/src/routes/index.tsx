@@ -1,16 +1,23 @@
+import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { PerspectiveCamera, Environment, Stars } from '@react-three/drei';
-import Hallway from './components/Hallway.jsx';
-import Avatar from './components/Avatar.jsx';
-import Door from './components/Door.jsx';
+import Hallway from '@/components/Hallway.jsx';
+import Avatar from '@/components/Avatar.jsx';
+import Door from '@/components/Door.jsx';
+import '@/styles/index.css'
 
 const doorPositions = [
   { position: [-4, 0, -2], label: 'Internship', type: 'internship' },
   { position: [0, 0, -2], label: 'Upskill', type: 'upskill' },
   { position: [4, 0, -2], label: 'Graduate Job', type: 'graduate' },
 ];
+
+
+export const Route = createFileRoute('/')({
+  component: App,
+})
 
 function App() {
   const [gameState, setGameState] = useState('landing');
@@ -28,7 +35,7 @@ function App() {
   };
 
   return (
-    <div className="w-full h-screen overflow-hidden">
+    <div className="w-full h-screen overflow-hidden index-route">
       {gameState === 'landing' && (
         <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
           {/* Animated background particles */}
@@ -140,5 +147,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

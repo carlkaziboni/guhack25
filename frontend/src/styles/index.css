@@ -2,13 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+
+#app {
   /* Dark cinematic theme */
   --background: 220 15% 8%;
   --foreground: 45 100% 95%;
 }
 
-body {
+.index-route {
   margin: 0;
   padding: 0;
   background-color: hsl(220, 15%, 8%);
