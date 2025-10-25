@@ -17,7 +17,7 @@ export default function Door({ position, label, isNear }: DoorProps) {
       <mesh position={[0, 1.5, 0]}>
         <boxGeometry args={[1.5, 3, 0.1]} />
         <meshStandardMaterial 
-          color="#4a3020"
+          color={isNear ? 'gold' : '#4a3020'}
           roughness={0.8}
         />
       </mesh>

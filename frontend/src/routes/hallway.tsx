@@ -5,9 +5,14 @@ import Hallway from '@/components/Hallway.tsx'
 import Avatar from '@/components/Avatar.tsx'
 import Door from '@/components/Door.tsx'
 import '@/styles/index.css'
+import * as THREE from 'three'
 import { useState } from 'react'
 
-const doorPositions: { position: [number, number, number]; label: string; type: string; }[] = [
+const doorPositions: {
+  position: [number, number, number]
+  label: string
+  type: string
+}[] = [
   { position: [-4, 0, -2], label: 'Internship', type: 'internship' },
   { position: [0, 0, -2], label: 'Upskill', type: 'upskill' },
   { position: [4, 0, -2], label: 'Graduate Job', type: 'graduate' },
@@ -18,12 +23,30 @@ export const Route = createFileRoute('/hallway')({
 })
 
 function RouteComponent() {
-  const [nearDoor] = useState(null)
+  const [_, setPlayerPos] = useState(new THREE.Vector3())
+  const [nearDoor, setNearDoor] = useState<string | null>(null)
+
+  const handlePositionChange = (pos: THREE.Vector3) => {
+    setPlayerPos(pos)
+
+    const threshold = 1.5
+    let foundDoor: string | null = null
+
+    for (const door of doorPositions) {
+      const distance = pos.distanceTo(new THREE.Vector3(...door.position))
+      if (distance < threshold) {
+        foundDoor = door.type
+        break
+      }
+    }
+
+    setNearDoor((prev) => (prev !== foundDoor ? foundDoor : prev))
+  }
 
   const handleDoorInteract = () => {
     if (nearDoor) {
-      alert(`You selected: ${nearDoor}`)
-      // This would trigger the warp transition and go to chat
+      alert(`You entered the ${nearDoor} door!`)
+      // Trigger warp transition or navigation here
     }
   }
 
@@ -33,17 +56,8 @@ function RouteComponent() {
         <PerspectiveCamera makeDefault position={[0, 2, 8]} fov={60} />
         <ambientLight intensity={0.3} />
         <directionalLight position={[5, 10, 5]} intensity={1} castShadow />
-        <pointLight position={[0, 3, 0]} intensity={0.5} color="#ffd700" />
         <Environment preset="sunset" />
-        <Stars
-          radius={100}
-          depth={50}
-          count={1000}
-          factor={4}
-          saturation={0}
-          fade
-          speed={1}
-        />
+        <Stars radius={100} depth={50} count={1000} factor={4} fade speed={1} />
 
         <Hallway />
 
@@ -56,9 +70,14 @@ function RouteComponent() {
           />
         ))}
 
-        <Avatar onInteract={handleDoorInteract} nearDoor={!!nearDoor} />
+        <Avatar
+          onPositionChange={handlePositionChange}
+          onInteract={handleDoorInteract}
+          nearDoor={!!nearDoor}
+        />
       </Canvas>
 
+      {/* HUD */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-black/70 backdrop-blur-sm px-6 py-4 rounded-lg border border-yellow-400/30">
         <div className="text-center">
           <p className="text-yellow-400 font-semibold mb-2">Controls</p>
