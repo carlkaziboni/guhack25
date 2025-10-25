@@ -1,6 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
-import Landing from '@/components/Landing.tsx'
 import Sprite from '@/components/Sprite.tsx'
 import '@/styles/questions.css'
 
@@ -9,7 +8,6 @@ export const Route = createFileRoute('/questions')({
 })
 
 function RouteComponent() {
-  const [started, setStarted] = useState(false)
   const [position, setPosition] = useState({ x: 100, y: 100 })
   const [isMoving, setIsMoving] = useState(false)
   const [direction, setDirection] = useState('right') // 🧭 new state
@@ -102,22 +100,18 @@ function RouteComponent() {
 
   return (
     <div className="w-full h-screen">
-      {!started ? (
-        <Landing onStart={() => setStarted(true)} />
-      ) : (
-        <div className="relative w-full h-full bg-gray-800 overflow-hidden">
-          <Sprite
-            x={position.x}
-            y={position.y}
-            isSprinting={isMoving}
-            direction={direction}
-          />
+      <div className="relative w-full h-full bg-gray-800 overflow-hidden">
+        <Sprite
+          x={position.x}
+          y={position.y}
+          isSprinting={isMoving}
+          direction={direction}
+        />
 
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <h2 className="text-3xl text-[#007bbe]">Chatbot coming soon...</h2>
-          </div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <h2 className="text-3xl text-[#007bbe]">Chatbot coming soon...</h2>
         </div>
-      )}
+      </div>
     </div>
   )
 }

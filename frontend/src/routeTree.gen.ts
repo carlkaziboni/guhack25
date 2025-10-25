@@ -12,8 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UpskillRouteImport } from './routes/upskill'
 import { Route as QuestionsRouteImport } from './routes/questions'
 import { Route as InternshipRouteImport } from './routes/internship'
+import { Route as HallwayRouteImport } from './routes/hallway'
 import { Route as GraduateRouteImport } from './routes/graduate'
-import { Route as DoorSelectionRouteImport } from './routes/door-selection'
 import { Route as IndexRouteImport } from './routes/index'
 
 const UpskillRoute = UpskillRouteImport.update({
@@ -31,14 +31,14 @@ const InternshipRoute = InternshipRouteImport.update({
   path: '/internship',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HallwayRoute = HallwayRouteImport.update({
+  id: '/hallway',
+  path: '/hallway',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GraduateRoute = GraduateRouteImport.update({
   id: '/graduate',
   path: '/graduate',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DoorSelectionRoute = DoorSelectionRouteImport.update({
-  id: '/door-selection',
-  path: '/door-selection',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -49,16 +49,16 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/door-selection': typeof DoorSelectionRoute
   '/graduate': typeof GraduateRoute
+  '/hallway': typeof HallwayRoute
   '/internship': typeof InternshipRoute
   '/questions': typeof QuestionsRoute
   '/upskill': typeof UpskillRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/door-selection': typeof DoorSelectionRoute
   '/graduate': typeof GraduateRoute
+  '/hallway': typeof HallwayRoute
   '/internship': typeof InternshipRoute
   '/questions': typeof QuestionsRoute
   '/upskill': typeof UpskillRoute
@@ -66,8 +66,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/door-selection': typeof DoorSelectionRoute
   '/graduate': typeof GraduateRoute
+  '/hallway': typeof HallwayRoute
   '/internship': typeof InternshipRoute
   '/questions': typeof QuestionsRoute
   '/upskill': typeof UpskillRoute
@@ -76,24 +76,18 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/door-selection'
     | '/graduate'
+    | '/hallway'
     | '/internship'
     | '/questions'
     | '/upskill'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/door-selection'
-    | '/graduate'
-    | '/internship'
-    | '/questions'
-    | '/upskill'
+  to: '/' | '/graduate' | '/hallway' | '/internship' | '/questions' | '/upskill'
   id:
     | '__root__'
     | '/'
-    | '/door-selection'
     | '/graduate'
+    | '/hallway'
     | '/internship'
     | '/questions'
     | '/upskill'
@@ -101,8 +95,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DoorSelectionRoute: typeof DoorSelectionRoute
   GraduateRoute: typeof GraduateRoute
+  HallwayRoute: typeof HallwayRoute
   InternshipRoute: typeof InternshipRoute
   QuestionsRoute: typeof QuestionsRoute
   UpskillRoute: typeof UpskillRoute
@@ -131,18 +125,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InternshipRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/hallway': {
+      id: '/hallway'
+      path: '/hallway'
+      fullPath: '/hallway'
+      preLoaderRoute: typeof HallwayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/graduate': {
       id: '/graduate'
       path: '/graduate'
       fullPath: '/graduate'
       preLoaderRoute: typeof GraduateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/door-selection': {
-      id: '/door-selection'
-      path: '/door-selection'
-      fullPath: '/door-selection'
-      preLoaderRoute: typeof DoorSelectionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -157,8 +151,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DoorSelectionRoute: DoorSelectionRoute,
   GraduateRoute: GraduateRoute,
+  HallwayRoute: HallwayRoute,
   InternshipRoute: InternshipRoute,
   QuestionsRoute: QuestionsRoute,
   UpskillRoute: UpskillRoute,
