@@ -7,6 +7,11 @@ class ConnectionManager:
 
     def connect(self, websocket: WebSocket):
         self.active_connections.append(websocket)
+        websocket.send_json(
+            {
+                "question": "What specific challenge or goal in your career are you trying to solve right now?"
+            }
+        )
 
     def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
