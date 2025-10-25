@@ -1,79 +1,139 @@
-import React, { useState, useEffect } from "react";
-import Landing from "./components/Landing";
-import Sprite from "./Sprite";
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Canvas } from '@react-three/fiber';
+import { PerspectiveCamera, Environment, Stars } from '@react-three/drei';
+import Hallway from './components/Hallway.jsx';
+import Avatar from './components/Avatar.jsx';
+import Door from './components/Door.jsx';
+
+const doorPositions = [
+  { position: [-4, 0, -2], label: 'Internship', type: 'internship' },
+  { position: [0, 0, -2], label: 'Upskill', type: 'upskill' },
+  { position: [4, 0, -2], label: 'Graduate Job', type: 'graduate' },
+];
 
 function App() {
-  const [started, setStarted] = useState(false);
-  const [position, setPosition] = useState({ x: 100, y: 100 });
-  const [isMoving, setIsMoving] = useState(false);
-  const [direction, setDirection] = useState("right"); // 🧭 new state
-  const step = 5;
-  const sprintStep = 12;
+  const [gameState, setGameState] = useState('landing');
+  const [nearDoor, setNearDoor] = useState(null);
 
-  useEffect(() => {
-    const keys = new Set();
+  const handleStart = () => {
+    setGameState('hallway');
+  };
 
-    const handleKeyDown = (e) => {
-      const key = e.key.toLowerCase();
-      if (["arrowup", "arrowdown", "arrowleft", "arrowright", "w", "a", "s", "d"].includes(key)) {
-        keys.add(key);
-        setIsMoving(true);
-
-        setPosition((prev) => {
-          const moveStep = sprintStep;
-
-          switch (key) {
-            case "arrowup":
-            case "w":
-              return { ...prev, y: Math.max(prev.y - moveStep, 0) };
-
-            case "arrowdown":
-            case "s":
-              return { ...prev, y: Math.min(prev.y + moveStep, window.innerHeight - 36) };
-
-            case "arrowleft":
-            case "a":
-              setDirection("left"); // 👈 flip sprite
-              return { ...prev, x: Math.max(prev.x - moveStep, 0) };
-
-            case "arrowright":
-            case "d":
-              setDirection("right"); // 👉 normal sprite
-              return { ...prev, x: Math.min(prev.x + moveStep, window.innerWidth - 36) };
-
-            default:
-              return prev;
-          }
-        });
-      }
-    };
-
-    const handleKeyUp = (e) => {
-      keys.delete(e.key.toLowerCase());
-      if (![...keys].some((k) => ["arrowup", "arrowdown", "arrowleft", "arrowright", "w", "a", "s", "d"].includes(k))) {
-        setIsMoving(false);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-    };
-  }, []);
+  const handleDoorInteract = () => {
+    if (nearDoor) {
+      alert(`You selected: ${nearDoor}`);
+      // This would trigger the warp transition and go to chat
+    }
+  };
 
   return (
-    <div className="w-full h-screen">
-      {!started ? (
-        <Landing onStart={() => setStarted(true)} />
-      ) : (
-        <div className="relative w-full h-full bg-gray-800 overflow-hidden">
-          <Sprite x={position.x} y={position.y} isSprinting={isMoving} direction={direction} />
+    <div className="w-full h-screen overflow-hidden">
+      {gameState === 'landing' && (
+        <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
+          {/* Animated background particles */}
+          <div className="absolute inset-0">
+            {[...Array(20)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-2 h-2 bg-yellow-400 rounded-full"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                }}
+                animate={{
+                  opacity: [0.2, 1, 0.2],
+                  scale: [1, 1.5, 1],
+                }}
+                transition={{
+                  duration: 2 + Math.random() * 2,
+                  repeat: Infinity,
+                  delay: Math.random() * 2,
+                }}
+              />
+            ))}
+          </div>
 
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <h2 className="text-3xl text-[#007bbe]">Chatbot coming soon...</h2>
+          <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
+            <motion.div
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center"
+            >
+              <h1 className="text-7xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-purple-400 to-yellow-400">
+                PathFinder
+              </h1>
+              <p className="text-2xl text-purple-300 mb-8">
+                Interactive Career Journey
+              </p>
+              <p className="text-lg text-gray-300 max-w-2xl mb-12">
+                Step into an immersive 3D world where you explore different career pathways.
+              </p>
+            </motion.div>
+
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleStart}
+              className="px-12 py-4 text-2xl font-bold text-gray-900 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full shadow-2xl hover:shadow-yellow-400/50 transition-all duration-300"
+            >
+              Start Your Journey
+            </motion.button>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 1 }}
+              className="mt-16 text-gray-400 text-sm text-center"
+            >
+              <p>Best experienced with keyboard controls</p>
+              <p className="mt-2">Use Arrow Keys or WASD to move • Enter to interact</p>
+            </motion.div>
+          </div>
+        </div>
+      )}
+      
+      {gameState === 'hallway' && (
+        <div className="w-full h-screen relative">
+          <Canvas shadows>
+            <PerspectiveCamera makeDefault position={[0, 2, 8]} fov={60} />
+            <ambientLight intensity={0.3} />
+            <directionalLight position={[5, 10, 5]} intensity={1} castShadow />
+            <pointLight position={[0, 3, 0]} intensity={0.5} color="#ffd700" />
+            <Environment preset="sunset" />
+            <Stars radius={100} depth={50} count={1000} factor={4} saturation={0} fade speed={1} />
+            
+            <Hallway />
+            
+            {doorPositions.map((door) => (
+              <Door
+                key={door.type}
+                position={door.position}
+                label={door.label}
+                isNear={nearDoor === door.type}
+              />
+            ))}
+
+            <Avatar onInteract={handleDoorInteract} nearDoor={!!nearDoor} />
+          </Canvas>
+
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-black/70 backdrop-blur-sm px-6 py-4 rounded-lg border border-yellow-400/30">
+            <div className="text-center">
+              <p className="text-yellow-400 font-semibold mb-2">Controls</p>
+              <div className="text-gray-300 text-sm space-y-1">
+                <p>Arrow Keys or WASD - Move</p>
+                <p>ENTER - Interact with door</p>
+                {nearDoor && (
+                  <p className="text-yellow-400 font-bold mt-2 animate-pulse">
+                    Press ENTER to enter {nearDoor}!
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}
