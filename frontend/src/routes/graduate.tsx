@@ -1,3 +1,4 @@
+import Questions from '@/components/Questions'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/graduate')({
@@ -5,5 +6,5 @@ export const Route = createFileRoute('/graduate')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/graduate"!</div>
+  return <Questions />
 }

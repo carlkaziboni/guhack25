@@ -1,13 +1,8 @@
-import { createFileRoute } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
 import Sprite from '@/components/Sprite.tsx'
 import '@/styles/questions.css'
 
-export const Route = createFileRoute('/questions')({
-  component: RouteComponent,
-})
-
-function RouteComponent() {
+export default function Questions() {
   const [position, setPosition] = useState({ x: 100, y: 100 })
   const [isMoving, setIsMoving] = useState(false)
   const [direction, setDirection] = useState('right') // 🧭 new state

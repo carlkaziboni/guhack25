@@ -4,7 +4,7 @@ import * as THREE from 'three'
 
 interface AvatarProps {
   onInteract: () => void
-  onPositionChange: (pos: THREE.Vector3) => void // ✅ new prop
+  onPositionChange: (pos: THREE.Vector3) => void
   nearDoor: boolean
 }
 
@@ -93,7 +93,7 @@ export default function Avatar({
     mesh.position.x = Math.max(-9, Math.min(9, mesh.position.x))
     mesh.position.z = Math.max(-4, Math.min(4, mesh.position.z))
 
-    // 🔥 Notify parent of new position
+    // Notify parent of new position
     onPositionChange(mesh.position.clone())
   })
 
@@ -110,7 +110,7 @@ export default function Avatar({
           metalness={0.7}
         />
 
-        {/* ✅ Attach light directly to the mesh */}
+        {/* Attach light directly to the mesh */}
         <pointLight color="#ffd700" intensity={1} distance={3} castShadow />
       </mesh>
     </group>

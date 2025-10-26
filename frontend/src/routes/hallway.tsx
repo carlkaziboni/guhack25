@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { Canvas } from '@react-three/fiber'
 import { PerspectiveCamera, Environment, Stars } from '@react-three/drei'
 import Hallway from '@/components/Hallway.tsx'
@@ -25,6 +25,7 @@ export const Route = createFileRoute('/hallway')({
 function RouteComponent() {
   const [_, setPlayerPos] = useState(new THREE.Vector3())
   const [nearDoor, setNearDoor] = useState<string | null>(null)
+  const router = useRouter()
 
   const handlePositionChange = (pos: THREE.Vector3) => {
     setPlayerPos(pos)
@@ -45,8 +46,7 @@ function RouteComponent() {
 
   const handleDoorInteract = () => {
     if (nearDoor) {
-      alert(`You entered the ${nearDoor} door!`)
-      // Trigger warp transition or navigation here
+      router.navigate({ to: `/${nearDoor}` })
     }
   }
 
