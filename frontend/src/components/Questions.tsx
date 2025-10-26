@@ -52,12 +52,12 @@ export default function Questions() {
 
             case 'arrowleft':
             case 'a':
-              setDirection('left') // 👈 flip sprite
+              setDirection('left') // flip sprite
               return { ...prev, x: Math.max(prev.x - moveStep, 0) }
 
             case 'arrowright':
             case 'd':
-              setDirection('right') // 👉 normal sprite
+              setDirection('right') // normal sprite
               return {
                 ...prev,
                 x: Math.min(prev.x + moveStep, window.innerWidth - 36),
