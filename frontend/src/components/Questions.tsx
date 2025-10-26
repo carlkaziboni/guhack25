@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Sprite from '@/components/Sprite.tsx'
+import Stalls from "@/components/Stalls.tsx"
 import '@/styles/questions.css'
 
 export default function Questions() {
@@ -7,6 +8,11 @@ export default function Questions() {
   const [isMoving, setIsMoving] = useState(false)
   const [direction, setDirection] = useState('right') // 🧭 new state
   const sprintStep = 12
+
+  const handleStallInteract = () => {
+    console.log("clicked");
+    alert("clicked"); // or use a state to show text on screen
+  };
 
   useEffect(() => {
     const keys = new Set<string>()
@@ -101,9 +107,16 @@ export default function Questions() {
           isSprinting={isMoving}
           direction={direction}
         />
+        <Stalls 
+        x={400} 
+        y={300} 
+        playerX={position.x} 
+        playerY={position.y} 
+        onInteract={handleStallInteract}
+        flipHorizontal={false}
+      />
 
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <h2 className="text-3xl text-[#007bbe]">Chatbot coming soon...</h2>
         </div>
       </div>
     </div>
