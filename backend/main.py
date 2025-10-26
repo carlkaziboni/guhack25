@@ -3,6 +3,7 @@ import os
 import anthropic
 from dotenv import load_dotenv
 from fastapi import FastAPI, WebSocket
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 
 
@@ -11,6 +12,14 @@ load_dotenv()
 app = FastAPI()
 
 claude_api_key = os.getenv("CLAUDE_API_KEY")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 html = """
@@ -79,3 +88,18 @@ async def get_claude_response(prompt: str) -> str:
 async def read_root():
     response = await get_claude_response("Hello, Claude! Can you tell me a joke?")
     return {"joke": response}
+
+
+@app.post("/chat")
+async def chat(request):
+    client = anthropic.Anthropic(api_key=claude_api_key)
+    try:
+        response = client.messages.create(
+            model="claude-3-haiku-20240307",
+            max_tokens=1024,
+            messages=[{"role": "user", "content": request.message}],
+        )
+        return {"answer": response.content[0].text}
+    except Exception as e:
+        print(f"Error: {e}")
+        return {"answer": ""}

@@ -13,6 +13,7 @@ import { Route as UpskillRouteImport } from './routes/upskill'
 import { Route as InternshipRouteImport } from './routes/internship'
 import { Route as HallwayRouteImport } from './routes/hallway'
 import { Route as GraduateRouteImport } from './routes/graduate'
+import { Route as ChatRouteImport } from './routes/chat'
 import { Route as IndexRouteImport } from './routes/index'
 
 const UpskillRoute = UpskillRouteImport.update({
@@ -35,6 +36,11 @@ const GraduateRoute = GraduateRouteImport.update({
   path: '/graduate',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChatRoute = ChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -43,6 +49,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
   '/graduate': typeof GraduateRoute
   '/hallway': typeof HallwayRoute
   '/internship': typeof InternshipRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
   '/graduate': typeof GraduateRoute
   '/hallway': typeof HallwayRoute
   '/internship': typeof InternshipRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
   '/graduate': typeof GraduateRoute
   '/hallway': typeof HallwayRoute
   '/internship': typeof InternshipRoute
@@ -65,14 +74,28 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/graduate' | '/hallway' | '/internship' | '/upskill'
+  fullPaths:
+    | '/'
+    | '/chat'
+    | '/graduate'
+    | '/hallway'
+    | '/internship'
+    | '/upskill'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/graduate' | '/hallway' | '/internship' | '/upskill'
-  id: '__root__' | '/' | '/graduate' | '/hallway' | '/internship' | '/upskill'
+  to: '/' | '/chat' | '/graduate' | '/hallway' | '/internship' | '/upskill'
+  id:
+    | '__root__'
+    | '/'
+    | '/chat'
+    | '/graduate'
+    | '/hallway'
+    | '/internship'
+    | '/upskill'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ChatRoute: typeof ChatRoute
   GraduateRoute: typeof GraduateRoute
   HallwayRoute: typeof HallwayRoute
   InternshipRoute: typeof InternshipRoute
@@ -109,6 +132,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GraduateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -121,6 +151,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ChatRoute: ChatRoute,
   GraduateRoute: GraduateRoute,
   HallwayRoute: HallwayRoute,
   InternshipRoute: InternshipRoute,
